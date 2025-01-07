@@ -11,7 +11,49 @@
             </svg>
             Dashboard
         </a>
+
+        <!-- Manajemen Hadir -->
+        <div x-data="{ open: {{ request()->routeIs('rapat.*') ? 'true' : 'false' }} }" class="mt-4">
+            <button @click="open = !open" 
+                    class="w-full px-4 py-2 flex items-center justify-between hover:bg-gray-700 transition-colors duration-150">
+                <div class="flex items-center">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span class="font-semibold">Kehadiran</span>
+                </div>
+                <svg class="w-4 h-4 transform transition-transform duration-150" 
+                     :class="{'rotate-180': open}"
+                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+            <div x-show="open" 
+                 x-transition:enter="transition ease-out duration-150"
+                 x-transition:enter-start="transform opacity-0 -translate-y-2"
+                 x-transition:enter-end="transform opacity-100 translate-y-0"
+                 x-transition:leave="transition ease-in duration-100"
+                 x-transition:leave-start="transform opacity-100 translate-y-0"
+                 x-transition:leave-end="transform opacity-0 -translate-y-2"
+                 class="space-y-1">
+                <a href="{{ route('kehadiran.index') }}" 
+                   class="flex items-center px-8 py-2 hover:bg-gray-700 transition-colors duration-200 {{ request()->routeIs('kehadiran.index') ? 'bg-gray-700' : '' }}">
+                    <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                    </svg>
+                    Daftar Hadir
+                </a>
+                <a href="{{ route('kehadiran.create') }}" 
+                   class="flex items-center px-8 py-2 hover:bg-gray-700 transition-colors duration-200 {{ request()->routeIs('kehadiran.create') ? 'bg-gray-700' : '' }}">
+                    <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    Tambah Hadir
+                </a>
+            </div>
+        </div>
         
+        <!-- Manajemen Rapat Sidebar -->
         <div x-data="{ open: {{ request()->routeIs('rapat.*') ? 'true' : 'false' }} }" class="mt-4">
             <button @click="open = !open" 
                     class="w-full px-4 py-2 flex items-center justify-between hover:bg-gray-700 transition-colors duration-150">
@@ -59,6 +101,7 @@
             </div>
         </div>
 
+        <!-- Manajemen Notulensi Sidebar -->
         <div x-data="{ open: {{ request()->routeIs('notulensi.*') ? 'true' : 'false' }} }" class="mt-4">
             <button @click="open = !open" 
                     class="w-full px-4 py-2 flex items-center justify-between hover:bg-gray-700 transition-colors duration-150">
@@ -99,6 +142,7 @@
             </div>
         </div>
 
+         <!-- Manajemen Undangan Sidebar -->
         <div x-data="{ open: {{ request()->routeIs('undangan.*') ? 'true' : 'false' }} }" class="mt-4">
             <button @click="open = !open" 
                     class="w-full px-4 py-2 flex items-center justify-between hover:bg-gray-700 transition-colors duration-150">
@@ -139,6 +183,7 @@
             </div>
         </div>
 
+        <!-- Manajemen OPD Sidebar -->
         <div x-data="{ open: {{ request()->routeIs('opd.*') ? 'true' : 'false' }} }" class="mt-4">
             <button @click="open = !open" 
                     class="w-full px-4 py-2 flex items-center justify-between hover:bg-gray-700 transition-colors duration-150">
@@ -179,6 +224,7 @@
             </div>
         </div>
 
+        <!-- Logout Sidebar -->
         <form method="POST" action="{{ route('logout') }}" class="mt-8">
             @csrf
             <button type="submit" 

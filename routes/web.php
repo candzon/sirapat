@@ -7,8 +7,9 @@ use App\Http\Controllers\NotulensiController;
 use App\Http\Controllers\UndanganController;
 use App\Http\Controllers\OpdController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\KehadiranController;
 
-Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
 
 // Auth Routes
 Route::get('/login', [AuthController::class, 'loginForm'])->name('login');
@@ -64,5 +65,16 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/{opd}/edit', [OpdController::class, 'edit'])->name('opd.edit');
         Route::put('/{opd}', [OpdController::class, 'update'])->name('opd.update');
         Route::delete('/{opd}', [OpdController::class, 'destroy'])->name('opd.destroy');
+    });
+
+    // Kehadiran Routes
+    Route::prefix('kehadiran')->group(function () {
+        Route::get('/', [KehadiranController::class, 'index'])->name('kehadiran.index');
+        Route::get('/create', [KehadiranController::class, 'create'])->name('kehadiran.create');
+        Route::post('/', [KehadiranController::class, 'store'])->name('kehadiran.store');
+        Route::get('/{kehadiran}', [KehadiranController::class, 'show'])->name('kehadiran.show');
+        Route::get('/{kehadiran}/edit', [KehadiranController::class, 'edit'])->name('kehadiran.edit');
+        Route::put('/{kehadiran}', [KehadiranController::class, 'update'])->name('kehadiran.update');
+        Route::delete('/{kehadiran}', [KehadiranController::class, 'destroy'])->name('kehadiran.destroy');
     });
 });

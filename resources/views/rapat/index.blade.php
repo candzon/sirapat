@@ -4,10 +4,12 @@
     <div class="container mx-auto px-4">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-2xl font-bold">Daftar Rapat</h1>
+            @if(auth()->user()->role != 'user')
             <a href="{{ route('rapat.create') }}" 
                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                 Buat Rapat Baru
             </a>
+            @endif
         </div>
 
         @if(session('success'))
