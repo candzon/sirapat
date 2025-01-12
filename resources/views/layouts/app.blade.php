@@ -12,7 +12,10 @@
         @include('layouts.sidebar')
         
         <div class="flex-1">
+            @include('layouts.topbar')
             <main class="p-6">
+                
+
                 @yield('content')
             </main>
         </div>
