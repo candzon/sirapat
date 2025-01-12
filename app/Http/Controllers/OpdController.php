@@ -35,6 +35,11 @@ class OpdController extends Controller
             ->with('success', 'OPD berhasil ditambahkan.');
     }
 
+    public function show(Opd $opd)
+    {
+        return view('opd.show', compact('opd'));
+    }
+
     public function edit(Opd $opd)
     {
         return view('opd.edit', compact('opd'));

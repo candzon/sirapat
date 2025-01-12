@@ -16,7 +16,7 @@ class UndanganController extends Controller
 
     public function create()
     {
-        $rapats = Rapat::where('status', 'belum_mulai')->get();
+        $rapats = Rapat::where('status', 'draft')->get();
         return view('undangan.create', compact('rapats'));
     }
 
@@ -43,7 +43,7 @@ class UndanganController extends Controller
 
     public function edit(Undangan $undangan)
     {
-        $rapats = Rapat::where('status', 'belum_mulai')->get();
+        $rapats = Rapat::where('status', 'draft')->get();
         return view('undangan.edit', compact('undangan', 'rapats'));
     }
 

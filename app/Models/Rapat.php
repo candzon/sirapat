@@ -57,4 +57,9 @@ class Rapat extends Model
     {
         return $this->hasMany(Lampiran::class);
     }
+
+    public function kehadiran()
+    {
+        return $this->hasMany(Kehadiran::class);
+    }
 } 

@@ -16,7 +16,7 @@ class NotulensiController extends Controller
 
     public function create()
     {
-        $rapats = Rapat::where('status', 'selesai')->get();
+        $rapats = Rapat::where('status', 'draft')->get();
         return view('notulensi.create', compact('rapats'));
     }
 
@@ -43,7 +43,7 @@ class NotulensiController extends Controller
 
     public function edit(Notulen $notulen)
     {
-        $rapats = Rapat::where('status', 'selesai')->get();
+        $rapats = Rapat::where('status', 'draft')->get();
         return view('notulensi.edit', compact('notulen', 'rapats'));
     }
 

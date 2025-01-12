@@ -62,6 +62,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [OpdController::class, 'index'])->name('opd.index');
         Route::get('/create', [OpdController::class, 'create'])->name('opd.create');
         Route::post('/', [OpdController::class, 'store'])->name('opd.store');
+        Route::get('/{opd}', [OpdController::class, 'show'])->name('opd.show');
         Route::get('/{opd}/edit', [OpdController::class, 'edit'])->name('opd.edit');
         Route::put('/{opd}', [OpdController::class, 'update'])->name('opd.update');
         Route::delete('/{opd}', [OpdController::class, 'destroy'])->name('opd.destroy');
