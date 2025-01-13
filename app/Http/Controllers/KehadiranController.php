@@ -98,4 +98,16 @@ class KehadiranController extends Controller
         // Redirect ke halaman daftar kehadiran setelah dihapus
         return redirect()->route('kehadiran.index')->with('success', 'Kehadiran berhasil dihapus!');
     }
+
+    public function setHadir(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'keterangan' => 'required|string'
+        ]);
+
+        $kehadiran = Kehadiran::findOrFail($id);
+        $kehadiran->update($validated);
+
+        return redirect()->route('kehadiran.index')->with('success', 'Kehadiran berhasil diperbarui!');
+    }
 }

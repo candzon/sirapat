@@ -42,10 +42,10 @@
                     <tr>
                         <td>{{ $rapat->tanggal }}</td>
                         <td>{{ $rapat->judul }}</td>
-                        <td>{{ $rapat->jenis }}</td>
+                        <td>{{ $rapat->jenisRapat->nama }}</td>
                         <td>
                             <span class="px-2 py-1 rounded text-sm 
-                                {{ $rapat->status === 'Pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800' }}">
+                                {{ $rapat->status === 'draft' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800' }}">
                                 {{ $rapat->status }}
                             </span>
                         </td>

@@ -77,5 +77,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/{kehadiran}/edit', [KehadiranController::class, 'edit'])->name('kehadiran.edit');
         Route::put('/{kehadiran}', [KehadiranController::class, 'update'])->name('kehadiran.update');
         Route::delete('/{kehadiran}', [KehadiranController::class, 'destroy'])->name('kehadiran.destroy');
+        Route::put('/{kehadiran}/hadir', [KehadiranController::class, 'setHadir'])->name('kehadiran.setHadir');
     });
 });
