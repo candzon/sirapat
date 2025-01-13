@@ -9,7 +9,7 @@
         <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
             <form action="{{ route('undangan.store') }}" method="POST">
                 @csrf
-                
+                <input type="text" name="user_id" id="user_id" value="{{ Auth::user()->id }}" hidden>
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="rapat_id">
                         Rapat
