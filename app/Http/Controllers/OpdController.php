@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Opd;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class OpdController extends Controller
 {
@@ -18,22 +20,33 @@ class OpdController extends Controller
         return view('opd.create');
     }
 
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'nama' => 'required|string|max:255',
-            'kepala' => 'required|string|max:255',
-            'email' => 'required|email|unique:opds',
-            'telepon' => 'required|string|max:20',
-            'alamat' => 'nullable|string',
-            'is_active' => 'boolean'
-        ]);
 
-        Opd::create($validated);
 
-        return redirect()->route('opd.index')
-            ->with('success', 'OPD berhasil ditambahkan.');
-    }
+        public function store(Request $request)
+        {
+            $validated = $request->validate([
+                'nama' => 'required|string|max:255',
+                'kepala' => 'required|string|max:255',
+                'email' => 'required|email|unique:opds',
+                'telepon' => 'required|string|max:20',
+                'alamat' => 'nullable|string',
+                'is_active' => 'boolean'
+            ]);
+
+            $opd = Opd::create($validated);
+
+            // Create user account for OPD
+            User::create([
+                'name' => $validated['kepala'],
+                'email' => $validated['email'],
+                'password' => Hash::make('12345678'),
+                'role' => 'opd'
+            ]);
+
+            return redirect()->route('opd.index')
+                ->with('success', 'OPD berhasil ditambahkan.');
+        }
+
 
     public function show(Opd $opd)
     {

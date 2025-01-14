@@ -20,7 +20,7 @@ class DashboardController extends Controller
             'total_opd' => Opd::count(),
             'total_peserta' => PesertaRapat::count(),
             'rapat_mendatang' => Rapat::with('jenisRapat')
-                                    ->where('tanggal', '>=', Carbon::today())
+                                    ->whereDate('tanggal', Carbon::today())
                                     ->orderBy('tanggal')
                                     ->take(5)
                                     ->get(),

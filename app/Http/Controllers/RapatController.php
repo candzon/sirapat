@@ -86,6 +86,7 @@ class RapatController extends Controller
             'waktu' => 'required',
             'tempat' => 'required|string|max:255',
             'jenis_rapat_id' => 'required|exists:jenis_rapats,id',
+            'status' => 'required|string',
             'deskripsi' => 'nullable|string',
         ]);
 

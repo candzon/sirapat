@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Kehadiran;
 use App\Models\Rapat;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class KehadiranController extends Controller
@@ -25,7 +26,8 @@ class KehadiranController extends Controller
     public function create()
     {
         $rapats = Rapat::all();
-        return view('kehadiran.create', compact('rapats'));
+        $users = User::where('role', 'user')->get();
+        return view('kehadiran.create', compact('rapats', 'users'));
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Opd;
 use App\Models\Undangan;
 use App\Models\Rapat;
 use Illuminate\Http\Request;
@@ -10,7 +11,26 @@ class UndanganController extends Controller
 {
     public function index()
     {
-        $undangans = Undangan::with('rapat')->latest()->get();
+        // $undangans = Undangan::with('rapat')->latest()->get();
+        /**
+         * Retrieves a collection of Undangan (invitation) records with their associated relationships.
+         * If the authenticated user is not an admin, only their own invitations are returned.
+         * 
+         * The query includes:
+         * - Eager loading of 'rapat' (meeting) and 'user' relationships
+         * - Filtering based on user role and ID
+         * - Sorted by latest records first
+         * 
+         * @return \Illuminate\Database\Eloquent\Collection Collection of Undangan models
+         */
+        $undangans = Undangan::with(['rapat', 'user', 'opd'])
+            ->when(auth()->user()->role !== 'admin', function($query) {
+            return $query->where('user_id', auth()->id());
+            })
+            ->latest()
+            ->get();
+
+        // var_dump($Opds); die;
         return view('undangan.index', compact('undangans'));
     }
 
@@ -24,6 +44,7 @@ class UndanganController extends Controller
     {
         $validated = $request->validate([
             'rapat_id' => 'required|exists:rapats,id',
+            'user_id' => 'required|exists:users,id',
             'judul' => 'required|string|max:255',
             'isi' => 'required|string',
             'template' => 'required|string|max:50',
