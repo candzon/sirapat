@@ -40,19 +40,25 @@ class DashboardController extends Controller
         $rapat = Rapat::select('created_at')->orderBy('created_at', 'desc')->first();
 
         // Pastikan objek yang diambil valid sebelum digunakan
-        return collect([
+        $activities = collect([
             [
-                'time' => $notulen ? Carbon::parse($notulen->created_at)->diffForHumans() : '',
+                'time' => $notulen ? $notulen->created_at : null,
                 'message' => $notulen ? 'Notulen rapat telah ditambahkan' : 'Tidak ada notulen'
             ],
             [
-                'time' => $undangan ? Carbon::parse($undangan->created_at)->diffForHumans() : '',
+                'time' => $undangan ?  $undangan->created_at : null,
                 'message' => $undangan ? 'Undangan rapat telah dikirim' : 'Tidak ada undangan'
             ],
             [
-                'time' => $rapat ? Carbon::parse($rapat->created_at)->diffForHumans() : '',
+                'time' => $rapat ? $rapat->created_at : null,
                 'message' => $rapat ? 'Rapat baru telah dibuat' : 'Tidak ada rapat'
             ]
         ]);
+
+        // Urutkan berdasarkan waktu asli
+        return $activities->sortByDesc('time')->map(function ($activity) {
+            $activity['time'] = $activity['time'] ? Carbon::parse($activity['time'])->diffForHumans() : '';
+            return $activity;
+        })->values();
     }
 } 
