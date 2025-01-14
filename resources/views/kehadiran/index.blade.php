@@ -45,9 +45,11 @@
                                 Lihat
                             </button>
                             @if($kehadiran->keterangan != 'hadir')
+                                @if(auth()->user()->role == 'user' && $kehadiran->nama == auth()->user()->name)
                                 <button onclick="confirmHadir({{ $kehadiran->id }})" class="bg-yellow-500 text-white py-1 px-3 rounded mr-2">
                                     Hadir
                                 </button>
+                                @endif
                             @endif
                             @if(auth()->user()->role != 'user')
                                 <button onclick="openEditModal({{ $kehadiran->id }})" class="bg-blue-500 text-white py-1 px-3 rounded mr-2">

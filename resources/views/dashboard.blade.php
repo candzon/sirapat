@@ -40,7 +40,7 @@
                 <tbody>
                     @foreach($rapat_mendatang as $rapat)
                     <tr>
-                        <td>{{ $rapat->tanggal }}</td>
+                        <td>{{ \Carbon\Carbon::parse($rapat->tanggal)->format('d/m/Y') }} {{ \Carbon\Carbon::parse($rapat->waktu)->format('H:i') }}</td>
                         <td>{{ $rapat->judul }}</td>
                         <td>{{ $rapat->jenisRapat->nama }}</td>
                         <td>
