@@ -24,15 +24,5 @@
         </div>
     </div>
 </body>
-
-<script>
-    $(document).ready(function () {
-        $('#nama').select2({
-            placeholder: 'Cari nama...',
-            allowClear: true
-        });
-    });
-</script>
-
 </html> 
 
