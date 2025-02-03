@@ -6,7 +6,7 @@
             <h1 class="text-2xl font-bold">Buat Notulensi</h1>
         </div>
 
-        <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <div class="bg-blue-200 shadow-md rounded px-8 pt-6 pb-8 mb-4">
             <form action="{{ route('notulensi.store') }}" method="POST">
                 @csrf
                 
@@ -14,7 +14,7 @@
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="rapat_id">
                         Rapat
                     </label>
-                    <select name="rapat_id" id="rapat_id" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <select name="rapat_id" id="rapat_id" class="bg-blue-50 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                         <option value="">Pilih Rapat</option>
                         @foreach($rapats as $rapat)
                             <option value="{{ $rapat->id }}">{{ $rapat->judul }}</option>
@@ -29,7 +29,7 @@
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="isi">
                         Isi Notulensi
                     </label>
-                    <textarea name="isi" id="isi" rows="10" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                    <textarea name="isi" id="isi" rows="10" class="bg-blue-50 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
                     @error('isi')
                         <p class="text-red-500 text-xs italic">{{ $message }}</p>
                     @enderror
@@ -39,7 +39,7 @@
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="status">
                         Status
                     </label>
-                    <select name="status" id="status" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <select name="status" id="status" class="bg-blue-50 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                         <option value="draft">Draft</option>
                         <option value="selesai">Selesai</option>
                     </select>

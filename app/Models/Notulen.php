@@ -10,7 +10,8 @@ class Notulen extends Model
         'rapat_id',
         'notulis_id',
         'isi',
-        'status'
+        'status',
+        'image',
     ];
 
     // Relationships

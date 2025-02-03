@@ -21,7 +21,7 @@
         <div class="bg-white shadow-md rounded my-6">
             <table class="min-w-full table-auto">
                 <thead>
-                    <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                    <tr class="bg-blue-200 text-gray-600 uppercase text-sm leading-normal">
                         <th class="py-3 px-6 text-left">Judul</th>
                         <th class="py-3 px-6 text-left">Tanggal</th>
                         <th class="py-3 px-6 text-left">Waktu</th>
@@ -33,7 +33,7 @@
                 </thead>
                 <tbody class="text-gray-600 text-sm font-light">
                     @forelse($rapats as $rapat)
-                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                        <tr class="border-b border-blue-100 hover:bg-blue-100">
                             <td class="py-3 px-6 text-left">{{ $rapat->judul }}</td>
                             <td class="py-3 px-6 text-left">{{ $rapat->tanggal->format('d/m/Y') }}</td>
                             <td class="py-3 px-6 text-left">{{ $rapat->waktu }}</td>
@@ -121,7 +121,7 @@
                 <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
             </div>
             <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div class="bg-red-100 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div class="sm:flex sm:items-start">
                         <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
                             <svg class="h-6 w-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -138,7 +138,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <div class="bg-red-100 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                     <form id="deleteForm" method="POST">
                         @csrf
                         @method('DELETE')

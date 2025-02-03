@@ -6,7 +6,7 @@
             <h1 class="text-2xl font-bold">Tambah OPD Baru</h1>
         </div>
 
-        <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <div class="bg-blue-100 shadow-md rounded px-8 pt-6 pb-8 mb-4">
             <form action="{{ route('opd.store') }}" method="POST">
                 @csrf
                 
@@ -15,7 +15,7 @@
                         Nama OPD
                     </label>
                     <input type="text" name="nama" id="nama" 
-                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                           class="bg-blue-50 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                            value="{{ old('nama') }}">
                     @error('nama')
                         <p class="text-red-500 text-xs italic">{{ $message }}</p>
@@ -27,7 +27,7 @@
                         Kepala OPD
                     </label>
                     <input type="text" name="kepala" id="kepala" 
-                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                           class="bg-blue-50 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                            value="{{ old('kepala') }}">
                     @error('kepala')
                         <p class="text-red-500 text-xs italic">{{ $message }}</p>
@@ -39,7 +39,7 @@
                         Email
                     </label>
                     <input type="email" name="email" id="email" 
-                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                           class="bg-blue-50 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                            value="{{ old('email') }}">
                     @error('email')
                         <p class="text-red-500 text-xs italic">{{ $message }}</p>
@@ -51,7 +51,7 @@
                         Telepon
                     </label>
                     <input type="text" name="telepon" id="telepon" 
-                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                           class="bg-blue-50 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                            value="{{ old('telepon') }}">
                     @error('telepon')
                         <p class="text-red-500 text-xs italic">{{ $message }}</p>
@@ -63,7 +63,7 @@
                         Alamat
                     </label>
                     <textarea name="alamat" id="alamat" rows="3" 
-                              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">{{ old('alamat') }}</textarea>
+                              class="bg-blue-50 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">{{ old('alamat') }}</textarea>
                     @error('alamat')
                         <p class="text-red-500 text-xs italic">{{ $message }}</p>
                     @enderror
@@ -74,7 +74,7 @@
                         Status
                     </label>
                     <select name="is_active" id="is_active" 
-                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                            class="bg-blue-50 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                         <option value="1">Aktif</option>
                         <option value="0">Tidak Aktif</option>
                     </select>

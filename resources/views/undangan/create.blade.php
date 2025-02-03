@@ -6,7 +6,7 @@
             <h1 class="text-2xl font-bold">Buat Undangan</h1>
         </div>
 
-        <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <div class="bg-blue-100 shadow-md rounded px-8 pt-6 pb-8 mb-4">
             <form action="{{ route('undangan.store') }}" method="POST">
                 @csrf
                 <input type="text" name="user_id" id="user_id" value="{{ Auth::user()->id }}" hidden>
@@ -14,7 +14,7 @@
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="rapat_id">
                         Rapat
                     </label>
-                    <select name="rapat_id" id="rapat_id" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <select name="rapat_id" id="rapat_id" class="bg-blue-50 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                         <option value="">Pilih Rapat</option>
                         @foreach($rapats as $rapat)
                             <option value="{{ $rapat->id }}">{{ $rapat->judul }}</option>
@@ -30,7 +30,7 @@
                         Judul Undangan
                     </label>
                     <input type="text" name="judul" id="judul" 
-                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                           class="bg-blue-50 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                            value="{{ old('judul') }}">
                     @error('judul')
                         <p class="text-red-500 text-xs italic">{{ $message }}</p>
@@ -42,7 +42,7 @@
                         Isi Undangan
                     </label>
                     <textarea name="isi" id="isi" rows="10" 
-                              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">{{ old('isi') }}</textarea>
+                              class="bg-blue-50 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">{{ old('isi') }}</textarea>
                     @error('isi')
                         <p class="text-red-500 text-xs italic">{{ $message }}</p>
                     @enderror
@@ -52,7 +52,7 @@
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="template">
                         Template
                     </label>
-                    <select name="template" id="template" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <select name="template" id="template" class="bg-blue-50 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                         <option value="default">Default</option>
                         <option value="formal">Formal</option>
                         <option value="casual">Casual</option>
@@ -66,7 +66,7 @@
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="status">
                         Status
                     </label>
-                    <select name="status" id="status" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <select name="status" id="status" class="bg-blue-50 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                         <option value="draft">Draft</option>
                         <option value="terkirim">Terkirim</option>
                         <option value="dibatalkan">Dibatalkan</option>

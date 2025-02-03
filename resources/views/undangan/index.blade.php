@@ -22,7 +22,7 @@
     <div class="bg-white shadow-md rounded my-6">
         <table class="min-w-full table-auto">
             <thead>
-                <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                <tr class="bg-blue-200 text-gray-600 uppercase text-sm leading-normal">
                     <th class="py-3 px-6 text-left">Judul</th>
                     <th class="py-3 px-6 text-left">Rapat</th>
                     <th class="py-3 px-6 text-left">Template</th>
@@ -31,6 +31,7 @@
                     <th class="py-3 px-6 text-left">Dibuat Oleh</th>
                     <th class="py-3 px-6 text-left">Tanggal dibuat</th>
                     <th class="py-3 px-6 text-center">Aksi</th>
+                </tr>
                     @foreach($undangans as $undangan)
                                         @php
                                             $opds = Opd::when(auth()->user()->role !== 'admin', function ($query) use ($undangan) {
@@ -42,20 +43,24 @@
                                     
                                             // var_dump($opdData); die;
                                         @endphp
-                                    <tr class="border-b border-gray-200 hover:bg-gray-100">
-                                        <td class="py-3 px-6 text-left">{{ $undangan->judul }}</td>
-                                        <td class="py-3 px-6 text-left">{{ $undangan->rapat->judul }}</td>
-                                        <td class="py-3 px-6 text-left">{{ $undangan->template }}</td>
-                                        <td class="py-3 px-6 text-left">
+                                    <tr class="border-b border-blue-100 hover:bg-blue-100">
+                                        <td class="py-3 px-3 text-left">{{ $undangan->judul }}</td>
+                                        <td class="py-3 px-3 text-left">{{ $undangan->rapat->judul }}</td>
+                                        <td class="py-3 px-7 text-left">{{ $undangan->template }}</td>
+                                        <td class="py-3 px-4 text-left">
                                             <span class="bg-{{ $undangan->status === 'terkirim' ? 'green' : ($undangan->status === 'draft' ? 'yellow' : 'red') }}-200 
                                                                                                    text-{{ $undangan->status === 'terkirim' ? 'green' : ($undangan->status === 'draft' ? 'yellow' : 'red') }}-600 
-                                                                                                   py-1 px-3 rounded-full text-xs">
+                                                                                                   py-1 px-2 rounded-full text-xs">
                                                 {{ ucfirst($undangan->status) }}
                                             </span>
                                         </td>
+                                        <td class="py-3 px-4 text-left" style="white-space: normal; word-wrap: break-word; word-break: break-word; line-height: 1.5;">
+                                            {{ $undangan->user->email ?? 'Tidak Ada' }}
+                                        </td>
+
                                         <!-- Jika dia adalah admin tampikan OPD logic ini -->
-                                        @if (auth()->user()->role === 'admin')
-                                            <td class="py-3 px-6 text-left">
+                                        {{-- @if (auth()->user()->role === 'admin')
+                                            <td class="py-3 px-3 text-left">
                                                 {{ Opd::where('id', $undangan->user_id)->value('nama') ?? '' }}
                                             </td>
                                         @else
@@ -64,12 +69,13 @@
                                                     {{ $opd->nama }}<br>
                                                 @endforeach
                                             </td>
-                                        @endif
-                                        <td class="py-3 px-6 text-left">{{ $undangan->user->name }}</td>
-                                        <td class="py-3 px-6 text-left">
-                                            {{ $undangan->created_at->format('d/m/Y H:i') }}
+                                        @endif --}}
+                                        <td class="py-3 px-3 text-left">{{ $undangan->user?->name }}</td>
+                                        <td class="py-3 px-3 text-left">
+                                            {{ $undangan->created_at->format('d/m/Y') }}
                                         </td>
-                                        <td class="py-3 px-6 text-center">
+                                        
+                                        <td class="py-3 px-3 text-center">
                                             <div class="flex item-center justify-center">
                                                 <button onclick="openViewModal({{ $undangan->id }})"
                                                     class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
@@ -119,7 +125,7 @@
                         <!-- Content will be loaded here -->
                     </div>
                 </div>
-                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <div class="bg-blue-100 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                     <button type="button" onclick="closeViewModal()"
                         class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm">
                         Tutup
@@ -152,7 +158,7 @@
             </div>
             <div
                 class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div class="bg-red-100 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div class="sm:flex sm:items-start">
                         <div
                             class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
@@ -172,7 +178,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <div class="bg-red-100 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                     <form id="deleteForm" method="POST">
                         @csrf
                         @method('DELETE')

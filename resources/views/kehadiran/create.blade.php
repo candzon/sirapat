@@ -6,7 +6,7 @@
         <h1 class="text-2xl font-bold">Buat Kehadiran Baru</h1>
     </div>
 
-    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <div class="bg-blue-200 shadow-md rounded px-8 pt-6 pb-8 mb-4">
         <form action="{{ route('kehadiran.store') }}" method="POST">
             @csrf
             <div class="mb-4">
@@ -14,7 +14,7 @@
                     Rapat
                 </label>
                 <select
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('rapat_id') border-red-500 @enderror"
+                    class="bg-blue-50 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('rapat_id') border-red-500 @enderror"
                     id="rapat_id" name="rapat_id" required>
                     <option value="">Pilih Rapat</option>
                     @foreach($rapats as $rapat)
@@ -44,7 +44,7 @@
                     Nama
                 </label>
                 <select
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('nama') border-red-500 @enderror"
+                    class="bg-blue-50 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('nama') border-red-500 @enderror"
                     id="nama" name="nama" required>
                     <option value="">Pilih Nama</option>
                     @foreach($users as $user)

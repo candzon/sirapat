@@ -1,12 +1,12 @@
 <form action="{{ route('kehadiran.update', $kehadiran->id) }}" method="POST">
     @csrf
     @method('PUT')
-    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+    <div class="bg-blue-100 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="rapat">
                 Judul Rapat
             </label>
-            <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            <select class="bg-blue-50 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="rapat" name="rapat" required>
                 <option value="">Pilih Rapat</option>
                 @foreach($rapats as $rapat)
@@ -21,7 +21,7 @@
             <label class="block text-gray-700 text-sm font-bold mb-2" for="nama">
                 Nama
             </label>
-            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            <input class="bg-blue-50 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="nama" type="text" name="nama" value="{{ old('nama', $kehadiran->nama) }}" required>
         </div>
 
@@ -29,7 +29,7 @@
             <label class="block text-gray-700 text-sm font-bold mb-2" for="tanggal">
                 Tanggal
             </label>
-            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            <input class="bg-blue-50 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="tanggal" type="date" name="tanggal" value="{{ old('tanggal', $kehadiran->tanggal->format('Y-m-d')) }}" required>
         </div>
 
@@ -37,7 +37,7 @@
             <label class="block text-gray-700 text-sm font-bold mb-2" for="keterangan">
                 Keterangan
             </label>
-            <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            <select class="bg-blue-50 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="keterangan" name="keterangan" required>
                 <option value="">Pilih Keterangan</option>
                 <option value="belum hadir" {{ old('keterangan', $kehadiran->keterangan) == "belum hadir" ? 'selected' : '' }}>belum hadir</option>
@@ -46,7 +46,7 @@
         </div>
     </div>
 
-    <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+    <div class="bg-blue-100 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
         <button type="submit" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
             Simpan
         </button>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Rapat;
 use App\Models\JenisRapat;
+use App\Models\Kehadiran;
 use App\Models\Opd;
 use App\Models\PesertaRapat;
 use App\Models\Notulen;
@@ -18,6 +19,7 @@ class DashboardController extends Controller
             'total_rapat' => Rapat::count(),
             'rapat_hari_ini' => Rapat::whereDate('tanggal', Carbon::today())->count(),
             'total_opd' => Opd::count(),
+            'total_kehadiran' => Kehadiran::count(),
             'total_peserta' => PesertaRapat::count(),
             'rapat_mendatang' => Rapat::with('jenisRapat')
                                     ->whereDate('tanggal', Carbon::today())
