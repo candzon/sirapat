@@ -24,4 +24,9 @@ class Notulen extends Model
     {
         return $this->belongsTo(User::class, 'notulis_id');
     }
+
+    public function opd()
+    {
+        return $this->belongsTo(Opd::class, 'notulis_id');
+    }
 } 

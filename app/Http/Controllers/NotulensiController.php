@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Notulen;
 use App\Models\Rapat;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class NotulensiController extends Controller
 {
@@ -66,5 +67,33 @@ class NotulensiController extends Controller
         $notulen->delete();
         return redirect()->route('notulensi.index')
             ->with('success', 'Notulensi berhasil dihapus.');
+    }
+
+    public function exportPdf(Notulen $notulen)
+    {
+        $notulens = Notulen::select('n.*', 'u.id', 'o.*')
+            ->from('notulens as n')
+            ->join('users as u', 'n.notulis_id', '=', 'u.id')
+            ->join('opds as o', 'u.id', '=', 'o.id')
+            ->where('n.id', $notulen->id)
+            ->first();
+
+        // var_dump($notulens);
+        // die;
+
+        // Configure DomPDF to handle images
+        $pdf = Pdf::setOptions([
+            'dpi' => 150,
+            'defaultFont' => 'sans-serif',
+            'defaultPaperSize' => 'a4',
+            'isHtml5ParserEnabled' => true,
+            'isRemoteEnabled' => true,
+            'chroot' => public_path()
+        ]);
+
+        $html = view()->make('template.pdf_notulen', compact('notulens'))->render();
+        $pdf->loadHTML($html);
+
+        return $pdf->download('notulensi-' . $notulen->id . '.pdf');
     }
 }

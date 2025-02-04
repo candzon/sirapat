@@ -44,6 +44,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/{notulen}/edit', [NotulensiController::class, 'edit'])->name('notulensi.edit');
         Route::put('/{notulen}', [NotulensiController::class, 'update'])->name('notulensi.update');
         Route::delete('/{notulen}', [NotulensiController::class, 'destroy'])->name('notulensi.destroy');
+        Route::get('/{notulen}/exportPdf', [NotulensiController::class, 'exportPdf'])->name('notulensi.exportPdf');
     });
     
     // Undangan Routes
