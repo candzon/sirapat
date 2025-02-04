@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Rapat;
 use App\Models\JenisRapat;
+use App\Models\Opd;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,7 +19,8 @@ class RapatController extends Controller
     public function create()
     {
         $jenis_rapats = JenisRapat::all();
-        return view('rapat.create', compact('jenis_rapats'));
+        $opds = Opd::all();
+        return view('rapat.create', compact('jenis_rapats', 'opds'));
     }
 
     public function store(Request $request)
@@ -30,10 +32,11 @@ class RapatController extends Controller
             'tempat' => 'required|string|max:255',
             'jenis_rapat_id' => 'required|exists:jenis_rapats,id',
             'deskripsi' => 'nullable|string',
+            'status' => 'required|string',
+            'pimpinan_rapat' => 'required|string',
         ]);
 
         $validated['created_by'] = Auth::id();
-        $validated['status'] = 'draft';
 
         Rapat::create($validated);
 
@@ -75,7 +78,8 @@ class RapatController extends Controller
     public function edit(Rapat $rapat)
     {
         $jenis_rapats = JenisRapat::all();
-        return view('rapat.edit', compact('rapat', 'jenis_rapats'));
+        $opds = Opd::all();
+        return view('rapat.edit', compact('rapat', 'jenis_rapats', 'opds'));
     }
 
     public function update(Request $request, Rapat $rapat)

@@ -8,6 +8,7 @@ class Rapat extends Model
 {
     protected $fillable = [
         'judul',
+        'pimpinan_rapat',
         'tanggal',
         'waktu',
         'tempat',

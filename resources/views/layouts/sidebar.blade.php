@@ -63,6 +63,26 @@
         </div>
         @endif
 
+        @if(auth()->user()->role === 'admin')
+        <a href="{{ route('rapat.create') }}" 
+            class="flex items-center px-4 py-2 mt-4 hover:bg-blue-300 transition-colors duration-150 {{ request()->routeIs('rapat.create') ? 'bg-blue-300' : '' }}">
+             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+             </svg>
+             Buat Rapat
+        </a>
+        @endif
+
+        @if(auth()->user()->role !== 'notulis' && auth()->user()->role !== 'user')
+        <a href="{{ route('undangan.create') }}" 
+            class="flex items-center px-4 py-2 mt-4 hover:bg-blue-300 transition-colors duration-150 {{ request()->routeIs('undangan.create') ? 'bg-blue-300' : '' }}">
+             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+             </svg>
+             Buat Undangan
+        </a>
+        @endif
+
         <!-- Manajemen Kehadiran Sidebar -->
         @if(auth()->user()->role !== 'notulis' && auth()->user()->role !== 'opd') <!-- Admin & User -->
         <div x-data="{ open: {{ request()->routeIs('kehadiran.*') ? 'true' : 'false' }} }" class="mt-4">

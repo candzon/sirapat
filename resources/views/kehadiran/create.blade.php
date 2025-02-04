@@ -44,7 +44,7 @@
                     Nama
                 </label>
                 <select
-                    class="bg-blue-50 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('nama') border-red-500 @enderror"
+                    class="select2-nama bg-blue-50 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('nama') border-red-500 @enderror"
                     id="nama" name="nama" required>
                     <option value="">Pilih Nama</option>
                     @foreach($users as $user)

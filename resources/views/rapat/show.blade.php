@@ -3,6 +3,11 @@
         <h4 class="text-sm font-bold text-gray-500">Judul Rapat</h4>
         <p class="text-gray-900">{{ $rapat->judul }}</p>
     </div>
+
+    <div>
+        <h4 class="text-sm font-bold text-gray-500">Pimpinan Rapat</h4>
+        <p class="text-gray-900">{{ $rapat->pimpinan_rapat }}</p>
+    </div>
     
     <div class="grid grid-cols-2 gap-4">
         <div>

@@ -1,3 +1,7 @@
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 <form action="{{ route('rapat.update', $rapat->id) }}" method="POST">
     @csrf
     @method('PUT')
@@ -9,6 +13,25 @@
             <input
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="judul" type="text" name="judul" value="{{ old('judul', $rapat->judul) }}" required>
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="pimpinan_rapat">
+                Pimpinan Rapat
+            </label>
+            <select
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('pimpinan_rapat') border-red-500 @enderror"
+                id="opd_nama" name="pimpinan_rapat" required>
+                <option value="">Pilih Pimpinan Rapat</option>
+                @foreach($opds as $opd)
+                    <option value="{{ $opd->kepala }}" {{ old('pimpinan_rapat', $rapat->pimpinan_rapat) == $opd->kepala ? 'selected' : '' }}>
+                        {{ $opd->kepala }} ({{ $opd->nama }})
+                    </option>
+                @endforeach
+            </select>
+            @error('pimpinan_rapat')
+                <p class="text-red-500 text-xs italic">{{ $message }}</p>
+            @enderror
         </div>
 
         <div class="mb-4 grid grid-cols-2 gap-4">
