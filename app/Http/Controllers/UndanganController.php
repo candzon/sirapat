@@ -7,6 +7,8 @@ use App\Models\Undangan;
 use App\Models\Rapat;
 use Illuminate\Http\Request;
 
+use Barryvdh\DomPDF\Facade\Pdf;
+
 class UndanganController extends Controller
 {
     public function index()
@@ -89,5 +91,33 @@ class UndanganController extends Controller
         $undangan->delete();
         return redirect()->route('undangan.index')
             ->with('success', 'Undangan berhasil dihapus.');
+    }
+
+    public function exportPdf(Undangan $undangan)
+    {
+        $undangan = Undangan::select('n.*', 'u.id', 'u.name', 'o.*')
+        ->from('notulens as n')
+        ->join('users as u', 'n.admin_pj', '=', 'u.id')
+        ->join('opds as o', 'u.id', '=', 'o.id')
+        ->where('n.id', $undangan->id)
+        ->first();
+
+        // var_dump($notulens);
+        // die;
+
+        // Configure DomPDF to handle images
+        $pdf = Pdf::setOptions([
+            'dpi' => 150,
+            'defaultFont' => 'sans-serif',
+            'defaultPaperSize' => 'a4',
+            'isHtml5ParserEnabled' => true,
+            'isRemoteEnabled' => true,
+            'chroot' => public_path()
+        ]);
+
+        $html = view()->make('template.pdf_undangan', compact('undangan'))->render();
+        $pdf->loadHTML($html);
+
+        return $pdf->download('undangan-' . $undangan->id . '.pdf');
     }
 } 

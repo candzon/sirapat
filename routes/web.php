@@ -17,6 +17,8 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/register', [AuthController::class, 'registerForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+// Waiting List Routes
+Route::get('/waiting', [AuthController::class, 'waiting'])->name('waiting');
 
 // Group routes that require authentication
 Route::middleware(['auth'])->group(function () {
@@ -34,7 +36,7 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/{rapat}', [RapatController::class, 'update'])->name('rapat.update');
         Route::delete('/{rapat}', [RapatController::class, 'destroy'])->name('rapat.destroy');
     });
-    
+
     // Notulensi Routes
     Route::prefix('notulensi')->group(function () {
         Route::get('/', [NotulensiController::class, 'index'])->name('notulensi.index');
@@ -46,7 +48,7 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/{notulen}', [NotulensiController::class, 'destroy'])->name('notulensi.destroy');
         Route::get('/{notulen}/exportPdf', [NotulensiController::class, 'exportPdf'])->name('notulensi.exportPdf');
     });
-    
+
     // Undangan Routes
     Route::prefix('undangan')->group(function () {
         Route::get('/', [UndanganController::class, 'index'])->name('undangan.index');
@@ -56,8 +58,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/{undangan}/edit', [UndanganController::class, 'edit'])->name('undangan.edit');
         Route::put('/{undangan}', [UndanganController::class, 'update'])->name('undangan.update');
         Route::delete('/{undangan}', [UndanganController::class, 'destroy'])->name('undangan.destroy');
+        Route::get('/{undangan}/exportPdf', [UndanganController::class, 'exportPdf'])->name('undangan.exportPdf');
     });
-    
+
     // Manajemen OPD Routes
     Route::prefix('manajemen-opd')->group(function () {
         Route::get('/', [OpdController::class, 'index'])->name('opd.index');
@@ -67,6 +70,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/{opd}/edit', [OpdController::class, 'edit'])->name('opd.edit');
         Route::put('/{opd}', [OpdController::class, 'update'])->name('opd.update');
         Route::delete('/{opd}', [OpdController::class, 'destroy'])->name('opd.destroy');
+        Route::put('/{user}/status', [OpdController::class, 'updateStatus'])->name('opd.updateStatus');
     });
 
     // Kehadiran Routes

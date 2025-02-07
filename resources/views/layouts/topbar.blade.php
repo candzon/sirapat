@@ -7,7 +7,13 @@
                 </div>
             </div>
             <div class="flex items-center">
-                <span class="font-bold text-blue-500">Welcome, {{ Auth::user()->name }}</span>
+                <span class="font-bold text-blue-500">
+                    @if(Auth::user()->role == 'opd')
+                        Welcome, Kepala: {{ Auth::user()->name }}
+                    @else
+                        Welcome, {{ Auth::user()->name }}
+                    @endif
+                </span>
             </div>
         </div>
     </div>

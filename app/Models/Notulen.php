@@ -9,6 +9,7 @@ class Notulen extends Model
     protected $fillable = [
         'rapat_id',
         'notulis_id',
+        'admin_pj',
         'isi',
         'status',
         'image',
@@ -27,6 +28,6 @@ class Notulen extends Model
 
     public function opd()
     {
-        return $this->belongsTo(Opd::class, 'notulis_id');
+        return $this->belongsTo(Opd::class, 'admin_pj');
     }
 } 

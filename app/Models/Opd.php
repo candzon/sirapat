@@ -7,12 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Opd extends Model
 {
     protected $fillable = [
+        'id',
         'nama',
         'kepala',
         'email',
         'telepon',
         'alamat',
-        'is_active'
+        'is_active',
+        'nip',
     ];
 
     protected $casts = [
@@ -28,5 +30,10 @@ class Opd extends Model
     public function rapats()
     {
         return $this->belongsToMany(Rapat::class, 'peserta_rapats');
+    }
+
+    public function User()
+    {
+        return $this->hasMany(User::class);
     }
 } 

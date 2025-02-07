@@ -33,6 +33,16 @@
                             placeholder="Email address">
                     </div>
                     <div>
+                        <label for="opd" class="sr-only">OPD</label>
+                        <select id="opd" name="opd" required 
+                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-blue-300 placeholder-blue-500 text-blue-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm">
+                            <option value="" class="text-blue-500">Pilih OPD</option>
+                            @foreach($opd as $o)
+                                <option value="{{ $o->id }}" class="text-blue-900">{{ $o->nama }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
                         <label for="password" class="sr-only">Password</label>
                         <input id="password" name="password" type="password" required 
                             class="appearance-none rounded-none relative block w-full px-3 py-2 border border-blue-300 placeholder-blue-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" 

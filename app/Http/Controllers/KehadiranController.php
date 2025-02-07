@@ -6,6 +6,7 @@ use App\Models\Kehadiran;
 use App\Models\Rapat;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class KehadiranController extends Controller
 {
@@ -14,9 +15,26 @@ class KehadiranController extends Controller
      */
     public function index()
     {
-        $kehadirans = Kehadiran::with(['Rapat' => function($query) {
-            $query->select('id', 'judul');
-        }])->get();
+        // $kehadirans = Kehadiran::with(['Rapat' => function($query) {
+        //     $query->select('id', 'judul');
+        // }])->get();
+
+        if (auth()->user()->role === 'opd') {
+            $kehadirans = DB::table('kehadirans as k')
+                ->join('rapats as r', 'k.rapat_id', '=', 'r.id')
+                ->join('users as u', 'k.nama', '=', 'u.id')
+                ->select('k.*', 'r.judul', 'u.name')
+                ->where('u.opd_id', auth()->user()->opd_id)
+                ->get();
+        }
+        // Admin bisa melihat kehadiran semua OPD
+        $kehadirans = DB::table('kehadirans as k')
+            ->join('rapats as r', 'k.rapat_id', '=', 'r.id')
+            ->join('users as u', 'k.nama', '=', 'u.id')
+            ->select('k.*', 'r.judul', 'u.name')
+            ->get();
+
+
         return view('kehadiran.index', compact('kehadirans'));
     }
 
@@ -26,7 +44,23 @@ class KehadiranController extends Controller
     public function create()
     {
         $rapats = Rapat::all();
-        $users = User::where('role', 'user')->get();
+
+        if (auth()->user()->role === 'admin') {
+            $users = User::whereIn('role', ['user', 'opd'])->where('is_active', 1)->get();
+        } elseif (auth()->user()->role === 'opd') {
+            $users = User::where('opd_id', auth()->user()->opd_id)
+                ->where('is_active', 1)
+                ->get();
+        } else {
+            $users = DB::table('users as u')
+                ->select('u.id', 'u.name', 'u.opd_id')
+                ->leftJoin('opd_members as om', 'om.staff_opd_id', '=', 'u.id')
+                ->where('om.kepala_opd_id', auth()->user()->opd_id)
+                ->where('u.is_active', 1)
+                ->get();
+        }
+        // Untuk OPD
+        // $users = User::where('opd_id', auth()->user()->opd_id)->get();
         return view('kehadiran.create', compact('rapats', 'users'));
     }
 
@@ -36,7 +70,7 @@ class KehadiranController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nama' => 'required|string|max:100',
+            'nama' => 'required|exists:users,id', // Memastikan user_id valid
             'rapat_id' => 'required|exists:rapats,id', // Memastikan rapat_id valid
         ]);
 
@@ -74,7 +108,7 @@ class KehadiranController extends Controller
     {
         // Validasi input form
         $validated = $request->validate([
-            'nama' => 'required|string|max:100',
+            'nama' => 'required|exists:users,id',
             'keterangan' => 'required|string',
             'tanggal' => 'required|date',
             'rapat' => 'required|exists:rapats,id',

@@ -1,14 +1,14 @@
-<aside class="w-64 h-screen bg-blue-400 text-white transition-all duration-200">
-    <div class="p-2 flex items-center gap-3">
-        <img src="{{ asset('image/pt.png') }}" alt="Logo" class="w-10 h-10 object-cover">
+<aside class="w-64 min-h-screen bg-blue-400 text-white transition-all duration-200 flex flex-col">
+    <div class="p</aside>-2 flex items-center gap-3 px-5 py-5">
+        <img src="{{ asset('image/pt.png') }}" alt="Logo" class="w-12  object-cover">
         <h1 class="text-xl font-bold text-white">SiRapat</h1>
     </div>
     
-    <nav class="mt-4">
+    <nav class="mt-4 flex-grow">
         <a href="{{ route('dashboard') }}" 
            class="flex items-center px-4 py-2 hover:bg-blue-300 transition-colors duration-150 {{ request()->routeIs('dashboard') ? 'bg-blue-300' : '' }}">
             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
             </svg>
             Dashboard
         </a>
@@ -73,7 +73,7 @@
         </a>
         @endif
 
-        @if(auth()->user()->role !== 'notulis' && auth()->user()->role !== 'user')
+        @if(auth()->user()->role !== 'notulis' && auth()->user()->role !== 'user' && auth()->user()->role !== 'opd')
         <a href="{{ route('undangan.create') }}" 
             class="flex items-center px-4 py-2 mt-4 hover:bg-blue-300 transition-colors duration-150 {{ request()->routeIs('undangan.create') ? 'bg-blue-300' : '' }}">
              <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -84,7 +84,7 @@
         @endif
 
         <!-- Manajemen Kehadiran Sidebar -->
-        @if(auth()->user()->role !== 'notulis' && auth()->user()->role !== 'opd') <!-- Admin & User -->
+        @if(auth()->user()->role !== 'notulis') <!-- Admin & User -->
         <div x-data="{ open: {{ request()->routeIs('kehadiran.*') ? 'true' : 'false' }} }" class="mt-4">
             <button @click="open = !open" 
                     class="w-full px-4 py-2 flex items-center justify-between hover:bg-blue-300 transition-colors duration-150">
@@ -214,9 +214,10 @@
                 </a>
             </div>
         </div>
+        @endif
 
         <!-- Manajemen OPD Sidebar -->
-        @if(auth()->user()->role !== 'opd') <!-- opd -->
+        @if(auth()->user()->role == 'admin') <!-- Admin -->
         <div x-data="{ open: {{ request()->routeIs('opd.*') ? 'true' : 'false' }} }" class="mt-4">
             <button @click="open = !open" 
                     class="w-full px-4 py-2 flex items-center justify-between hover:bg-blue-300 transition-colors duration-150">
@@ -245,7 +246,7 @@
                     <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
                     </svg>
-                    Daftar OPD
+                    Daftar & Verifikasi OPD
                 </a>
                 <a href="{{ route('opd.create') }}" 
                    class="flex items-center px-8 py-2 hover:bg-blue-300 transition-colors duration-200 {{ request()->routeIs('opd.create') ? 'bg-blue-300' : '' }}">
@@ -256,7 +257,6 @@
                 </a>
             </div>
         </div>
-        @endif
         @endif
 
         <!-- Logout Sidebar -->

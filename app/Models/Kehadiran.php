@@ -21,4 +21,9 @@ class Kehadiran extends Model
     {
         return $this->belongsTo(Rapat::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'nama', 'id');
+    }
 }

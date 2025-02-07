@@ -2,21 +2,21 @@
 @section('title', 'Daftar Kehadiran')
 @section('content')
 <div class="container mx-auto px-4">
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold">Daftar Kehadiran</h1>
-        @if(auth()->user()->role != 'user')
-            <a href="{{ route('kehadiran.create') }}" 
-               class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-               Buat Kehadiran Baru
-            </a>
-        @endif
-    </div>
-
     @if(session('success'))
         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
             {{ session('success') }}
         </div>
     @endif
+    
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold">Daftar Kehadiran</h1>
+        @if(auth()->user()->role != 'user')
+            <a href="{{ route('kehadiran.create') }}"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Buat Kehadiran Baru
+            </a>
+        @endif
+    </div>
 
     <div class="bg-white shadow-md rounded my-6">
         <table class="min-w-full table-auto">
@@ -32,35 +32,40 @@
             <tbody class="text-gray-600 text-sm font-light">
                 @forelse ($kehadirans as $kehadiran)
                     <tr id="kehadiran-{{ $kehadiran->id }}" class="border-b border-blue-100 hover:bg-blue-100">
-                        <td class="py-3 px-6">{{ $kehadiran->Rapat->judul }}</td>
-                        <td class="py-3 px-6">{{ $kehadiran->nama }}</td>
-                        <td class="py-3 px-6">{{ $kehadiran->tanggal->format('d M Y') }}</td>
+                        <td class="py-3 px-6">{{ $kehadiran->judul }}</td>
+                        <td class="py-3 px-6">{{ $kehadiran->name }}</td>
+                        <td class="py-3 px-6">{{ \Carbon\Carbon::parse($kehadiran->tanggal)->format('d M Y') }}</td>
                         <td class="py-3 px-6 keterangan">
-                            <span class="bg-{{ $kehadiran->keterangan === 'belum hadir' ? 'yellow' : 'green' }}-200 text-{{ $kehadiran->keterangan === 'belum hadir' ? 'yellow' : 'green' }}-800 py-1 px-3 rounded-full text-xs">
+                            <span
+                                class="bg-{{ $kehadiran->keterangan === 'belum hadir' ? 'yellow' : 'green' }}-200 text-{{ $kehadiran->keterangan === 'belum hadir' ? 'yellow' : 'green' }}-800 py-1 px-3 rounded-full text-xs">
                                 {{ $kehadiran->keterangan }}
                             </span>
                         </td>
                         <td class="py-3 px-6 text-center">
-                            <button onclick="openViewModal({{ $kehadiran->id }})" class="bg-green-500 text-white py-1 px-3 rounded mr-2">
+                            <button onclick="openViewModal({{ $kehadiran->id }})"
+                                class="bg-green-500 text-white py-1 px-3 rounded mr-2">
                                 Lihat
                             </button>
                             @if($kehadiran->keterangan != 'hadir')
-                                @if(auth()->user()->role == 'user' && $kehadiran->nama == auth()->user()->name)
-                                <button onclick="confirmHadir({{ $kehadiran->id }})" class="bg-yellow-500 text-white py-1 px-3 rounded mr-2">
-                                    Hadir
-                                </button>
+                                @if(auth()->user()->role == 'user' && $kehadiran->name == auth()->user()->name || auth()->user()->role == 'opd' && $kehadiran->name == auth()->user()->name)
+                                    <button onclick="confirmHadir({{ $kehadiran->id }})"
+                                        class="bg-yellow-500 text-white py-1 px-3 rounded mr-2">
+                                        Hadir
+                                    </button>
                                 @endif
                             @endif
                             @if(auth()->user()->role != 'user')
-                                <button onclick="openEditModal({{ $kehadiran->id }})" class="bg-blue-500 text-white py-1 px-3 rounded mr-2">
+                                <button onclick="openEditModal({{ $kehadiran->id }})"
+                                    class="bg-blue-500 text-white py-1 px-3 rounded mr-2">
                                     Edit
                                 </button>
-                                <button onclick="confirmDelete({{ $kehadiran->id }})" class="bg-red-500 text-white py-1 px-3 rounded">
+                                <button onclick="confirmDelete({{ $kehadiran->id }})"
+                                    class="bg-red-500 text-white py-1 px-3 rounded">
                                     Hapus
                                 </button>
                             @endif
                         </td>
-                    </tr>                
+                    </tr>
                 @empty
                     <tr>
                         <td class="py-3 px-6 text-center" colspan="4">Tidak ada data kehadiran</td>
@@ -224,7 +229,6 @@
         document.getElementById('deleteForm').action = `/kehadiran/${id}`;
         document.getElementById('deleteModal').classList.remove('hidden');
     }
-    
     function closeDeleteModal() {
         document.getElementById('deleteModal').classList.add('hidden');
     }

@@ -48,7 +48,7 @@
                     id="nama" name="nama" required>
                     <option value="">Pilih Nama</option>
                     @foreach($users as $user)
-                        <option value="{{ $user->name }}" {{ old('nama') == $user->name ? 'selected' : '' }}>
+                        <option value="{{ $user->id }}" {{ old('nama') == $user->name ? 'selected' : '' }}>
                             {{ $user->name }}
                         </option>
                     @endforeach

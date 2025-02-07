@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notulen Rapat</title>
+    <title>Undangan Rapat</title>
 
     <style>
         @page {
@@ -76,7 +76,7 @@
     <div class="container">
         <div class="header">
             <img src="{{ public_path('image/pt.png') }}" alt="Logo-PT">
-            <h3>PEMERINTAH KABUPATEN PATI</h3>
+            <h3>PEMERINTAH KABUPATEN </h3>
             <h3>{{strtoupper($notulens->nama)}}</h3>
             <p>{{$notulens->alamat}}</p>
             <p>Telepon : {{$notulens->telepon}} | E-mail : {{$notulens->email}}</p>
@@ -85,14 +85,16 @@
         <!-- Tambahkan konten notulen rapat Anda di sini -->
 
         <div class="isi-body">
-            <h3 class="isi-header underline-text">NOTA DINAS</h3>
+            <!-- <h3 class="isi-header underline-text">NOTA DINAS</h3> -->
+             <!-- Isi dari Undangan -->
             <p class="p-isi-body">{!! $notulens->isi !!}</p>
         </div>
 
-        <div class="footer">
+        <!-- Tanda Tangan  -->
+        <!-- <div class="footer">
             <table style="width: 250px; text-align: center;">
                 <tr>
-                    <td>KEPALA BIDANG</td>
+                    <td>Kepala Bidang</td>
                 </tr>
                 <tr>
                     <td>{{strtoupper($notulens->nama)}}</td>
@@ -110,7 +112,7 @@
                     <td>NIP: {{$notulens->nip}}</td>
                 </tr>
             </table>
-        </div>
+        </div> -->
     </div>
 </body>
 
