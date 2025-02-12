@@ -44,6 +44,11 @@ class Rapat extends Model
         return $this->belongsToMany(Opd::class, 'peserta_rapats');
     }
 
+    public function pimpinan()
+    {
+        return $this->belongsTo(User::class, 'pimpinan_rapat');
+    }
+
     public function notulen()
     {
         return $this->hasOne(Notulen::class);
@@ -63,4 +68,4 @@ class Rapat extends Model
     {
         return $this->hasMany(Kehadiran::class);
     }
-} 
+}

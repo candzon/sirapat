@@ -1,9 +1,9 @@
 @extends('layouts.app')
-@section('title', 'Daftar Undangan')
+@section('title', 'Edit Notulensi')
 @section('content')
 <div class="container mx-auto px-4">
     <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold">Edit Undangan</h1>
+        <h1 class="text-2xl font-bold">Edit Notulensi</h1>
     </div>
 
     <div class="bg-blue-200 shadow-md rounded px-8 pt-6 pb-8 mb-4">
@@ -37,6 +37,24 @@
                 </div>
 
                 <div class="mb-4">
+
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="penerima_id">
+                        Penerima Undangan
+                    </label>
+                    <select name="penerima_id[]" id="penerima_id" multiple
+                        class="select2 bg-blue-50 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        @foreach($users as $user)
+                            <option value="{{ $user->id }}" {{ (in_array($user->id, old('penerima_id', $undangan->undangan_dispo->pluck('penerima_id')->toArray()))) ? 'selected' : '' }}>
+                                {{ $user->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('penerima_id')
+                        <p class="text-red-500 text-xs italic">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="isi">
                         Isi
                     </label>
@@ -62,7 +80,7 @@
                     </select>
                 </div>
 
-                <div class="mb-4">
+                <!-- <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="status">
                         Status
                     </label>
@@ -74,30 +92,32 @@
                         </option>
                         <option value="terkirim" {{ old('status', $undangan->status) == "terkirim" ? 'selected' : '' }}>
                             Terkirim</option>
-                        <option value="dibatalkan" {{ old('status', $undangan->status) == "dibatalkan" ? 'selected' : '' }}>Dibatalkan</option>
+                        <option value="dibatalkan" {{ old('status', $undangan->status) == "dibatalkan" ? 'selected' : '' }}>
+                            Dibatalkan</option>
                     </select>
-                </div>
+                </div> -->
             </div>
             <div class="bg-blue-100 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                 <button type="submit"
                     class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
                     Simpan
                 </button>
-                <button type="button" onclick="closeEditModal()"
+                <a href="{{ route('undangan.index') }}"
                     class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
                     Batal
-                </button>
+                </a>
             </div>
         </form>
     </div>
+
+    <script>
+        $(document).ready(function () {
+            $('.select2').select2({
+                placeholder: 'Pilih penerima undangan',
+                allowClear: true
+            });
+        });
+    </script>
 </div>
 
-<!-- <script>
-    $(document).ready(function () {
-        $('.nama').select2({
-            placeholder: 'Cari nama...',
-            allowClear: true
-        });
-    });
-</script> -->
 @endsection

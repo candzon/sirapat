@@ -35,6 +35,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/{rapat}/edit', [RapatController::class, 'edit'])->name('rapat.edit');
         Route::put('/{rapat}', [RapatController::class, 'update'])->name('rapat.update');
         Route::delete('/{rapat}', [RapatController::class, 'destroy'])->name('rapat.destroy');
+        Route::patch('/{rapat}/updateStatus', [RapatController::class, 'updateStatus'])->name('rapat.updateStatus');
     });
 
     // Notulensi Routes
@@ -71,6 +72,7 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/{opd}', [OpdController::class, 'update'])->name('opd.update');
         Route::delete('/{opd}', [OpdController::class, 'destroy'])->name('opd.destroy');
         Route::put('/{user}/status', [OpdController::class, 'updateStatus'])->name('opd.updateStatus');
+        Route::delete('/{user}/delete', [OpdController::class, 'destroyUser'])->name('opd.destroyUser');
     });
 
     // Kehadiran Routes

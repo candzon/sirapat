@@ -23,7 +23,8 @@ class KehadiranController extends Controller
             $kehadirans = DB::table('kehadirans as k')
                 ->join('rapats as r', 'k.rapat_id', '=', 'r.id')
                 ->join('users as u', 'k.nama', '=', 'u.id')
-                ->select('k.*', 'r.judul', 'u.name')
+                ->join('opds as o', 'u.opd_id', '=', 'o.id')
+                ->select('k.*', 'r.judul', 'u.name', 'o.nama as opd_nama')
                 ->where('u.opd_id', auth()->user()->opd_id)
                 ->get();
         }
@@ -31,7 +32,8 @@ class KehadiranController extends Controller
         $kehadirans = DB::table('kehadirans as k')
             ->join('rapats as r', 'k.rapat_id', '=', 'r.id')
             ->join('users as u', 'k.nama', '=', 'u.id')
-            ->select('k.*', 'r.judul', 'u.name')
+            ->join('opds as o', 'u.opd_id', '=', 'o.id')
+            ->select('k.*', 'r.judul', 'u.name', 'o.nama as opd_nama')
             ->get();
 
 

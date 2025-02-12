@@ -50,6 +50,23 @@
             </div>
 
             <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="penerima_id">
+                    Penerima Undangan
+                </label>
+                <select name="penerima_id[]" id="penerima_id" multiple
+                    class="select2 bg-blue-50 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    @foreach($users as $user)
+                        <option value="{{ $user->id }}" {{ (is_array(old('penerima_id')) && in_array($user->id, old('penerima_id'))) ? 'selected' : '' }}>
+                            {{ $user->name }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('penerima_id')
+                    <p class="text-red-500 text-xs italic">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="template">
                     Template
                 </label>
@@ -64,7 +81,7 @@
                 @enderror
             </div>
 
-            <div class="mb-4">
+            <!-- <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="status">
                     Status
                 </label>
@@ -77,7 +94,7 @@
                 @error('status')
                     <p class="text-red-500 text-xs italic">{{ $message }}</p>
                 @enderror
-            </div>
+            </div> -->
 
             <div class="flex items-center justify-between">
                 <button type="submit"
@@ -92,4 +109,14 @@
         </form>
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        $('.select2').select2({
+            placeholder: 'Pilih penerima undangan',
+            allowClear: true
+        });
+    });
+</script>
+
 @endsection

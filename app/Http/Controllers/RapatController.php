@@ -32,11 +32,11 @@ class RapatController extends Controller
             'tempat' => 'required|string|max:255',
             'jenis_rapat_id' => 'required|exists:jenis_rapats,id',
             'deskripsi' => 'nullable|string',
-            'status' => 'required|string',
-            'pimpinan_rapat' => 'required|string',
+            'pimpinan_rapat' => 'nullable|string',
         ]);
 
         $validated['created_by'] = Auth::id();
+        $validated['status'] = 'draft';
 
         Rapat::create($validated);
 
@@ -100,10 +100,22 @@ class RapatController extends Controller
             ->with('success', 'Rapat berhasil diperbarui.');
     }
 
+    public function updateStatus(Request $request, Rapat $rapat)
+    {
+        $validated = $request->validate([
+            'status' => 'required|string',
+        ]);
+
+        $rapat->update($validated);
+
+        return redirect()->route('rapat.index')
+            ->with('success', 'Status rapat berhasil diperbarui.');
+    }
+
     public function destroy(Rapat $rapat)
     {
         $rapat->delete();
         return redirect()->route('rapat.index')
             ->with('success', 'Rapat berhasil dihapus.');
     }
-} 
+}

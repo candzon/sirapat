@@ -27,7 +27,7 @@
                 <div class="relative">
                     <select
                         class="select2-opd w-full bg-blue-50 border border-gray-300 text-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-2 px-3 @error('opd_nama') border-red-500 @enderror"
-                        id="opd_nama" name="pimpinan_rapat" required>
+                        id="opd_nama" name="pimpinan_rapat">
                         <option value="">Pilih Pimpinan Rapat</option>
                         @foreach($opds as $opd)
                             <option value="{{ $opd->kepala }}" {{ old('pimpinan_rapat') == $opd->nama ? 'selected' : '' }}>
@@ -98,7 +98,7 @@
                 @enderror
             </div>
 
-            <div class="mb-4">
+            <!-- <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="status"></label>
                 Status Rapat
                 </label>
@@ -116,7 +116,7 @@
                 @error('status')
                     <p class="text-red-500 text-xs italic">{{ $message }}</p>
                 @enderror
-            </div>
+            </div> -->
 
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="deskripsi">

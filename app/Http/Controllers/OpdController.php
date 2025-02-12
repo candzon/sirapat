@@ -13,13 +13,26 @@ class OpdController extends Controller
     public function index()
     {
         $opds = Opd::latest()->get();
-        $verifikasi_data = DB::table('users as u')
-            ->join('opd_members as om', 'u.id', '=', 'om.staff_opd_id')
-            ->join('opds as o', 'om.kepala_opd_id', '=', 'o.id')
-            ->select('u.id', 'u.name as nama_user', 'u.email as email_user', 'u.is_active', 'o.nama as nama_dinas', 'o.kepala as kepala_dinas')
-            ->where('u.role', '=', 'user')
-            ->latest('u.created_at')
-            ->get();
+
+        if (auth()->user()->role == 'admin') {
+            $verifikasi_data = DB::table('users as u')
+                ->join('opd_members as om', 'u.id', '=', 'om.staff_opd_id')
+                ->join('opds as o', 'om.kepala_opd_id', '=', 'o.id')
+                ->select('u.id', 'u.name as nama_user', 'u.email as email_user', 'u.is_active', 'o.nama as nama_dinas', 'o.kepala as kepala_dinas')
+                ->where('u.role', '=', 'user')
+                ->latest('u.created_at')
+                ->get();
+        } else {
+            $verifikasi_data = DB::table('users as u')
+                ->join('opd_members as om', 'u.id', '=', 'om.staff_opd_id')
+                ->join('opds as o', 'om.kepala_opd_id', '=', 'o.id')
+                ->select('u.id', 'u.name as nama_user', 'u.email as email_user', 'u.is_active', 'o.nama as nama_dinas', 'o.kepala as kepala_dinas')
+                ->where('u.role', '=', 'user')
+                ->where('om.kepala_opd_id', '=', auth()->user()->opd_id)
+                ->latest('u.created_at')
+                ->get();
+        }
+
         // var_dump( $verifikasi_data ); die;
         return view('opd.index', compact('opds', 'verifikasi_data'));
     }
@@ -116,9 +129,35 @@ class OpdController extends Controller
         }
     }
 
+    public function destroyUser(User $user)
+    {
+        try {
+            DB::beginTransaction();
+
+            // Delete related records in opd_members table first
+            DB::table('opd_members')->where('staff_opd_id', $user->id)->delete();
+
+            // Then delete the user
+            $user->delete();
+
+            DB::commit();
+            return redirect()->route('opd.index')
+                ->with('success', 'User berhasil dihapus.');
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()
+                ->with('error', 'Gagal menghapus user: ' . $e->getMessage());
+        }
+    }
+
     public function destroy(Opd $opd)
     {
+
         $opd->delete();
+
+        DB::table('users')->where('opd_id', $opd->id)->delete();
+        
         return redirect()->route('opd.index')
             ->with('success', 'OPD berhasil dihapus.');
     }

@@ -14,7 +14,7 @@
         </a>
 
         <!-- Manajemen Rapat -->
-        @if(auth()->user()->role === 'admin')
+        @if(auth()->user()->role === 'admin' | auth()->user()->role === 'opd')
          <div x-data="{ open: {{ request()->routeIs('rapat.*') ? 'true' : 'false' }} }" class="mt-4">
             <button @click="open = !open" 
                     class="w-full px-4 py-2 flex items-center justify-between hover:bg-blue-300 transition-colors duration-150">
@@ -52,6 +52,8 @@
                     </svg>
                     Buat Rapat
                 </a>
+
+                @if(auth()->user()->role === 'admin')
                 <a href="{{ route('rapat.jenis') }}" 
                    class="flex items-center px-8 py-2 hover:bg-blue-300 transition-colors duration-200 {{ request()->routeIs('rapat.jenis') ? 'bg-blue-300' : '' }}">
                     <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -59,11 +61,12 @@
                     </svg>
                     Jenis Rapat
                 </a>
+                @endif
             </div>
         </div>
         @endif
 
-        @if(auth()->user()->role === 'admin')
+        @if(auth()->user()->role === 'admin' || auth()->user()->role === 'opd')
         <a href="{{ route('rapat.create') }}" 
             class="flex items-center px-4 py-2 mt-4 hover:bg-blue-300 transition-colors duration-150 {{ request()->routeIs('rapat.create') ? 'bg-blue-300' : '' }}">
              <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -73,7 +76,7 @@
         </a>
         @endif
 
-        @if(auth()->user()->role !== 'notulis' && auth()->user()->role !== 'user' && auth()->user()->role !== 'opd')
+        @if(auth()->user()->role !== 'notulis' && auth()->user()->role !== 'user')
         <a href="{{ route('undangan.create') }}" 
             class="flex items-center px-4 py-2 mt-4 hover:bg-blue-300 transition-colors duration-150 {{ request()->routeIs('undangan.create') ? 'bg-blue-300' : '' }}">
              <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -129,7 +132,6 @@
         @endif
 
         <!-- Manajemen Notulensi Sidebar -->
-        @if(auth()->user()->role !== 'opd') <!-- Admin & User -->
         <div x-data="{ open: {{ request()->routeIs('notulensi.*') ? 'true' : 'false' }} }" class="mt-4">
             <button @click="open = !open" 
                     class="w-full px-4 py-2 flex items-center justify-between hover:bg-blue-300 transition-colors duration-150">
@@ -160,7 +162,7 @@
                     </svg>
                     Daftar Notulensi
                 </a>
-                @if(auth()->user()->role !== 'user') <!-- Admin & Notulis -->
+                @if(auth()->user()->role !== 'user' && auth()->user()->role !== 'opd') <!-- Admin & Notulis -->
                 <a href="{{ route('notulensi.create') }}" 
                    class="flex items-center px-8 py-2 hover:bg-blue-300 transition-colors duration-200 {{ request()->routeIs('notulensi.create') ? 'bg-blue-300' : '' }}">
                     <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -171,9 +173,8 @@
                  @endif
             </div>
         </div>
-        @endif
 
-        @if(auth()->user()->role !== 'notulis' && auth()->user()->role !== 'user')
+        @if(auth()->user()->role !== 'notulis')
          <!-- Manajemen Undangan Sidebar -->
         <div x-data="{ open: {{ request()->routeIs('undangan.*') ? 'true' : 'false' }} }" class="mt-4">
             <button @click="open = !open" 
@@ -205,6 +206,7 @@
                     </svg>
                     Daftar Undangan
                 </a>
+                @if(auth()->user()->role === 'admin' || auth()->user()->role === 'opd')
                 <a href="{{ route('undangan.create') }}" 
                    class="flex items-center px-8 py-2 hover:bg-blue-300 transition-colors duration-200 {{ request()->routeIs('undangan.create') ? 'bg-blue-300' : '' }}">
                     <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -212,49 +214,52 @@
                     </svg>
                     Buat Undangan
                 </a>
+                @endif
             </div>
         </div>
         @endif
 
         <!-- Manajemen OPD Sidebar -->
-        @if(auth()->user()->role == 'admin') <!-- Admin -->
+        @if(auth()->user()->role == 'admin' || auth()->user()->role == 'opd') <!-- Admin -->
         <div x-data="{ open: {{ request()->routeIs('opd.*') ? 'true' : 'false' }} }" class="mt-4">
             <button @click="open = !open" 
-                    class="w-full px-4 py-2 flex items-center justify-between hover:bg-blue-300 transition-colors duration-150">
-                <div class="flex items-center">
-                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                    </svg>
-                    <span class="font-semibold">Manajemen OPD</span>
-                </div>
-                <svg class="w-4 h-4 transform transition-transform duration-150" 
-                     :class="{'rotate-180': open}"
-                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                class="w-full px-4 py-2 flex items-center justify-between hover:bg-blue-300 transition-colors duration-150">
+            <div class="flex items-center">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>
+                <span class="font-semibold">Manajemen OPD</span>
+            </div>
+            <svg class="w-4 h-4 transform transition-transform duration-150" 
+                 :class="{'rotate-180': open}"
+                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
             </button>
             <div x-show="open" 
-                 x-transition:enter="transition ease-out duration-150"
-                 x-transition:enter-start="transform opacity-0 -translate-y-2"
-                 x-transition:enter-end="transform opacity-100 translate-y-0"
-                 x-transition:leave="transition ease-in duration-100"
-                 x-transition:leave-start="transform opacity-100 translate-y-0"
-                 x-transition:leave-end="transform opacity-0 -translate-y-2"
-                 class="space-y-1">
-                <a href="{{ route('opd.index') }}" 
-                   class="flex items-center px-8 py-2 hover:bg-blue-300 transition-colors duration-200 {{ request()->routeIs('opd.index') ? 'bg-blue-300' : '' }}">
-                    <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-                    </svg>
-                    Daftar & Verifikasi OPD
-                </a>
-                <a href="{{ route('opd.create') }}" 
-                   class="flex items-center px-8 py-2 hover:bg-blue-300 transition-colors duration-200 {{ request()->routeIs('opd.create') ? 'bg-blue-300' : '' }}">
-                    <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                    </svg>
-                    Tambah OPD
-                </a>
+             x-transition:enter="transition ease-out duration-150"
+             x-transition:enter-start="transform opacity-0 -translate-y-2"
+             x-transition:enter-end="transform opacity-100 translate-y-0"
+             x-transition:leave="transition ease-in duration-100"
+             x-transition:leave-start="transform opacity-100 translate-y-0"
+             x-transition:leave-end="transform opacity-0 -translate-y-2"
+             class="space-y-1">
+            <a href="{{ route('opd.index') }}" 
+               class="flex items-center px-8 py-2 hover:bg-blue-300 transition-colors duration-200 {{ request()->routeIs('opd.index') ? 'bg-blue-300' : '' }}">
+                <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                </svg>
+                Daftar & Verifikasi OPD
+            </a>
+            @if(auth()->user()->role == 'admin')
+            <a href="{{ route('opd.create') }}" 
+               class="flex items-center px-8 py-2 hover:bg-blue-300 transition-colors duration-200 {{ request()->routeIs('opd.create') ? 'bg-blue-300' : '' }}">
+                <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                Tambah OPD
+            </a>
+            @endif
             </div>
         </div>
         @endif

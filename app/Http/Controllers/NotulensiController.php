@@ -28,7 +28,7 @@ class NotulensiController extends Controller
 
         // if (auth()->user()->role === 'admin') {
         // Admin bisa melihat notulen yang dibuat oleh semua OPD
-        if (auth()->user()->role === 'admin' || auth()->user()->role === 'notulis') {   
+        if (auth()->user()->role === 'admin' || auth()->user()->role === 'notulis') {
             $notulens = Notulen::with(['rapat', 'notulis', 'opd'])
                 ->latest()
                 ->get();
@@ -62,14 +62,30 @@ class NotulensiController extends Controller
     {
         // $rapats = Rapat::where('status', 'draft')->get();
         if (auth()->user()->role === 'admin' || auth()->user()->role === 'notulis') {
-            $rapats = Rapat::where('status', 'draft')->get();
+            $rapats = Rapat::where('status', 'draft')
+                ->select('id', 'judul')
+                ->get();
+            $admin_pj = User::where('role', 'opd')->select('id', 'name')->get();
+        } elseif (auth()->user()->role === 'opd') {
+            $rapats = Rapat::where('status', 'draft')
+                ->join('kehadirans', 'rapats.id', '=', 'kehadirans.rapat_id')
+                ->where('kehadirans.keterangan', 'hadir')
+                ->where('kehadirans.nama', auth()->id())
+                ->select('rapats.id', 'rapats.judul')
+                ->get();
+            // echo "<pre>";
+            // print_r($rapats);
+            // echo "</pre>";
+            // die;
             $admin_pj = User::where('role', 'opd')->select('id', 'name')->get();
         } else {
             $rapats = Rapat::where('status', 'draft')
                 ->join('kehadirans', 'rapats.id', '=', 'kehadirans.rapat_id')
                 ->where('kehadirans.keterangan', 'hadir')
+                ->where('kehadirans.nama', auth()->id())
                 ->select('rapats.id', 'rapats.judul')
                 ->get();
+            // var_dump(auth()->user()->opd_id); die;
             $admin_pj = DB::table('users')
                 ->join('opd_members', 'users.opd_id', '=', 'opd_members.kepala_opd_id')
                 ->select('users.id', 'users.name')
@@ -88,9 +104,32 @@ class NotulensiController extends Controller
             'isi' => 'required|string',
             'admin_pj' => 'required|exists:users,id',
             'status' => 'required|in:draft,selesai',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
         $validated['notulis_id'] = auth()->id();
+
+        // Upload image 
+        try {
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                if ($image === null) {
+                    throw new \Exception('Image file is null');
+                }
+                $imageName = time() . '.' . $image->extension();
+                if (!$image->move(public_path('images'), $imageName)) {
+                    throw new \Exception('Failed to upload image');
+                }
+                $validated['image'] = $imageName;
+            } else {
+                $validated['image'] = null;
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['image' => $e->getMessage()]);
+        }
+
 
         Notulen::create($validated);
 
@@ -117,7 +156,35 @@ class NotulensiController extends Controller
             'isi' => 'required|string',
             'status' => 'required|in:draft,selesai',
             'admin_pj' => 'required|exists:users,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
+
+
+        // Upload image
+        try {
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                if ($image === null) {
+                    throw new \Exception('Image file is null');
+                }
+                // Delete old image if exists
+                if ($notulen->image && file_exists(public_path('images/' . $notulen->image))) {
+                    unlink(public_path('images/' . $notulen->image));
+                }
+                $imageName = time() . '.' . $image->extension();
+                if (!$image->move(public_path('images'), $imageName)) {
+                    throw new \Exception('Failed to upload image');
+                }
+                $validated['image'] = $imageName;
+            } else {
+                $validated['image'] = $notulen->image; // Keep existing image if no new upload
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['image' => $e->getMessage()]);
+        }
+
 
         $notulen->update($validated);
 
@@ -157,6 +224,16 @@ class NotulensiController extends Controller
         $html = view()->make('template.pdf_notulen', compact('notulens'))->render();
         $pdf->loadHTML($html);
 
-        return $pdf->download('notulensi-' . $notulen->id . '.pdf');
+        try {
+            if (!$notulens) {
+                throw new \Exception('Data notulensi tidak ditemukan');
+            }
+            if (!$pdf) {
+                throw new \Exception('PDF tidak dapat dibuat');
+            }
+            return $pdf->download('notulensi-' . $notulen->id . '.pdf');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
     }
 }

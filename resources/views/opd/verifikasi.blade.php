@@ -1,9 +1,11 @@
-<div class="flex justify-between items-center mb-6">
-    <h1 class="text-2xl font-bold">Verifikasi OPD</h1>
-    <a href="{{ route('opd.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-        Tambah OPD
-    </a>
-</div>
+@if(auth()->user()->role === 'admin')
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold">Verifikasi OPD</h1>
+        <a href="{{ route('opd.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Tambah OPD
+        </a>
+    </div>
+@endif
 
 @if(session('success'))
     <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
@@ -64,6 +66,15 @@
                                     </button>
                                 </form>
                             @endif
+
+                            <form method="POST" action="{{ route('opd.destroyUser', ['user' => $result->id]) }}">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit"
+                                    class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded text-sm transition duration-300 ease-in-out">
+                                    Hapus
+                                </button>
+                            </form>
                         </div>
                     </td>
                     </form>

@@ -24,6 +24,13 @@
         </div>
     @endif
 
+    @if(session('error'))
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+            {{ session('error') }}
+        </div>
+    @endif
+
+
     <div class="bg-white shadow-md rounded my-6">
         <table class="min-w-full table-auto">
             <thead>
@@ -33,6 +40,7 @@
                     <th class="py-3 px-6 text-left">Admin PJ</th>
                     <th class="py-3 px-6 text-left">Status</th>
                     <th class="py-3 px-6 text-left">Tanggal</th>
+                    <th class="py-3 px-6 text-left">Foto Rapat</th>
                     <th class="py-3 px-6 text-center">Aksi</th>
                 </tr>
             </thead>
@@ -56,6 +64,16 @@
                         </td>
                         <td class="py-3 px-6 text-left">
                             {{ $notulen->created_at->format('d/m/Y H:i') }}
+                        </td>
+                        <td class="py-3 px-6 text-center">
+                            @if($notulen->image && file_exists(public_path('images/' . $notulen->image)))
+                                <button onclick="openImageModal('{{ asset('images/' . $notulen->image) }}')"
+                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded text-xs">
+                                    Lihat Foto
+                                </button>
+                            @else
+                                <span class="text-gray-400 italic">Tidak ada foto</span>
+                            @endif
                         </td>
                         <td class="py-3 px-6 text-center">
                             <div class="flex item-center justify-center">
@@ -174,6 +192,20 @@
 
 
     <script>
+        function openImageModal(imageUrl) {
+            // Create a modal with the image
+            const modal = document.createElement('div');
+            modal.innerHTML = `
+                <div class="fixed z-10 inset-0 overflow-y-auto">
+                    <div class="flex items-center justify-center min-h-screen">
+                        <div class="fixed inset-0 bg-gray-500 opacity-75" onclick="this.parentElement.parentElement.remove()"></div>
+                        <img src="${imageUrl}" class="relative z-20 max-w-3xl max-h-screen" alt="Foto Rapat">
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
         function openViewModal(id) {
             fetch(`/notulensi/${id}`)
                 .then(response => response.text())

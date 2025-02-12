@@ -7,7 +7,7 @@
             {{ session('success') }}
         </div>
     @endif
-    
+
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-bold">Daftar Kehadiran</h1>
         @if(auth()->user()->role != 'user')
@@ -24,6 +24,7 @@
                 <tr class="bg-blue-200 text-gray-600 uppercase text-sm leading-normal">
                     <th class="py-3 px-6 text-left">Rapat</th>
                     <th class="py-3 px-6 text-left">Nama</th>
+                    <th class="py-3 px-6 text-left">OPD</th>
                     <th class="py-3 px-6 text-left">Tanggal</th>
                     <th class="py-3 px-6 text-left">Keterangan</th>
                     <th class="py-3 px-6 text-center">Aksi</th>
@@ -34,6 +35,7 @@
                     <tr id="kehadiran-{{ $kehadiran->id }}" class="border-b border-blue-100 hover:bg-blue-100">
                         <td class="py-3 px-6">{{ $kehadiran->judul }}</td>
                         <td class="py-3 px-6">{{ $kehadiran->name }}</td>
+                        <td class="py-3 px-6">{{ $kehadiran->opd_nama }}</td>
                         <td class="py-3 px-6">{{ \Carbon\Carbon::parse($kehadiran->tanggal)->format('d M Y') }}</td>
                         <td class="py-3 px-6 keterangan">
                             <span

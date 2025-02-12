@@ -1,10 +1,8 @@
 @extends('layouts.app')
 @section('title', 'Daftar Undangan')
-@php
-    use App\Models\Opd;
-@endphp
 @section('content')
 <div class="container mx-auto px-4">
+
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-bold">Daftar Undangan</h1>
         <a href="{{ route('undangan.create') }}"
@@ -19,94 +17,102 @@
         </div>
     @endif
 
+    @if(session('error'))
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <div class="bg-white shadow-md rounded my-6">
         <table class="min-w-full table-auto">
             <thead>
                 <tr class="bg-blue-200 text-gray-600 uppercase text-sm leading-normal">
                     <th class="py-3 px-6 text-left">Judul</th>
-                    <th class="py-3 px-6 text-left">Rapat</th>
-                    <th class="py-3 px-6 text-left">Template</th>
-                    <th class="py-3 px-6 text-left">Status</th>
-                    <th class="py-3 px-6 text-left">OPD</th>
                     <th class="py-3 px-6 text-left">Dibuat Oleh</th>
+                    <th class="py-3 px-6 text-left">OPD</th>
+                    <th class="py-3 px-6 text-left">Status</th>
                     <th class="py-3 px-6 text-left">Tanggal dibuat</th>
+                    <th class="py-3 px-6 text-left">Disposisi Ke</th>
                     <th class="py-3 px-6 text-center">Aksi</th>
                 </tr>
-                    @foreach($undangans as $undangan)
-                                        @php
-                                            $opds = Opd::when(auth()->user()->role !== 'admin', function ($query) use ($undangan) {
-                                                return $query->where('id', $undangan->user_id);
-                                            })->get();
+                @foreach($undangans as $undangan)
+                    <tr class="border-b border-blue-100 hover:bg-blue-100">
+                        <td class="py-3 px-3 text-left">{{ $undangan->judul }}</td>
+                        <td class="py-3 px-3 text-left">{{ $undangan->user?->name }}</td>
+                        <td class="py-3 px-4 text-left">{{ $undangan->user->email ?? 'Tidak Ada' }}</td>
+                        <td class="py-3 px-4 text-left">
+                            <span class="bg-green-200 text-black py-1 px-2 rounded-full text-xs">
+                                {{ ucfirst($undangan->status) }}
+                            </span>
+                        </td>
+                        <td class="py-3 px-3 text-left">{{ $undangan->created_at->format('d/m/Y') }}</td>
+                        @if(($undangan->penerima_id === Auth::id() || $undangan->user_id == Auth::id()) && Auth::user()->role !== 'user')
+                            <td class="py-3 px-3 text-left">
+                                <form action="{{ route('undangan.update', $undangan) }}" method="POST"
+                                    id="form-{{ $undangan->id }}">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="flex">
+                                        <select name="penerima_id[]" multiple
+                                            class="select2 bg-blue-50 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-64"
+                                            onchange="this.form.submit()">
+                                            @foreach($users->pluck('name', 'id') as $id => $name)
+                                                <option value="{{ $id }}">{{ $name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    @error('penerima_id')
+                                        <p class="text-red-500 text-xs italic">{{ $message }}</p>
+                                    @enderror
+                                </form>
+                            </td>
+                        @else
+                            <td class="py-3 px-3 text-left text-red-500">Akses dibatasi</td>
+                        @endif
 
-                                            $opdData = $opds->all();
 
-                                    
-                                            // var_dump($opdData); die;
-                                        @endphp
-                                    <tr class="border-b border-blue-100 hover:bg-blue-100">
-                                        <td class="py-3 px-3 text-left">{{ $undangan->judul }}</td>
-                                        <td class="py-3 px-3 text-left">{{ $undangan->rapat->judul }}</td>
-                                        <td class="py-3 px-7 text-left">{{ $undangan->template }}</td>
-                                        <td class="py-3 px-4 text-left">
-                                            <span class="bg-{{ $undangan->status === 'terkirim' ? 'green' : ($undangan->status === 'draft' ? 'yellow' : 'red') }}-200 
-                                                                                                   text-{{ $undangan->status === 'terkirim' ? 'green' : ($undangan->status === 'draft' ? 'yellow' : 'red') }}-600 
-                                                                                                   py-1 px-2 rounded-full text-xs">
-                                                {{ ucfirst($undangan->status) }}
-                                            </span>
-                                        </td>
-                                        <td class="py-3 px-4 text-left" style="white-space: normal; word-wrap: break-word; word-break: break-word; line-height: 1.5;">
-                                            {{ $undangan->user->email ?? 'Tidak Ada' }}
-                                        </td>
-
-                                        <!-- Jika dia adalah admin tampikan OPD logic ini -->
-                                        {{-- @if (auth()->user()->role === 'admin')
-                                            <td class="py-3 px-3 text-left">
-                                                {{ Opd::where('id', $undangan->user_id)->value('nama') ?? '' }}
-                                            </td>
-                                        @else
-                                            <td class="py-3 px-6 text-left">
-                                                @foreach($opds as $opd)
-                                                    {{ $opd->nama }}<br>
-                                                @endforeach
-                                            </td>
-                                        @endif --}}
-                                        <td class="py-3 px-3 text-left">{{ $undangan->user?->name }}</td>
-                                        <td class="py-3 px-3 text-left">
-                                            {{ $undangan->created_at->format('d/m/Y') }}
-                                        </td>
-                                        
-                                        <td class="py-3 px-3 text-center">
-                                            <div class="flex item-center justify-center">
-                                                <button onclick="openViewModal({{ $undangan->id }})"
-                                                    class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                        stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                                    </svg>
-                                                </button>
-                                                <button onclick="openEditModal({{ $undangan->id }})"
-                                                    class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                        stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                            d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                                    </svg>
-                                                </button>
-                                                <button onclick="confirmDelete({{ $undangan->id }})"
-                                                    class="w-4 transform hover:text-purple-500 hover:scale-110">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                        stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                    @endforeach
+                        <td class="py-3 px-3 text-center">
+                            <div class="flex item-center justify-center">
+                                <button onclick="openViewModal({{ $undangan->id }})"
+                                    class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                </button>
+                                <a href="{{ route('undangan.exportPdf', $undangan->id) }}"
+                                    class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                </a>
+                                @if($undangan->user_id === Auth::id() || Auth::user()->role === 'admin')
+                                    <a href="{{ route('undangan.edit', $undangan->id) }}"
+                                        class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                        </svg>
+                                    </a>
+                                    <button onclick="confirmDelete({{ $undangan->id }})"
+                                        class="w-4 transform hover:text-purple-500 hover:scale-110">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </button>
+                                @endif
+                            </div>
+                        </td>
+                    </tr>
+                @endforeach
                 </tbody>
         </table>
     </div>
@@ -319,6 +325,15 @@
             </div>
         </div>
     </div> --}}
+
+    <script>
+        $(document).ready(function () {
+            $('.select2').select2({
+                placeholder: 'Disposisi Ke',
+                allowClear: true
+            });
+        });
+    </script>
 </div>
 
 @push('scripts')

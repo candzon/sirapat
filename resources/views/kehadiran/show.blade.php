@@ -6,7 +6,7 @@
     
     <div>
         <h4 class="text-sm font-bold text-gray-500">Nama</h4>
-        <p class="text-gray-900">{{ $kehadiran->nama }}</p>
+        <p class="text-gray-900">{{ $kehadiran->user->name }}</p>
     </div>
     
     <div>

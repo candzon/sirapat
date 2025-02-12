@@ -14,7 +14,13 @@
     </div>
 
     <div id="daftar-opd" class="tab-content hidden">
-        @include('opd.daftar')
+        @if(auth()->user()->role === 'admin')
+            @include('opd.daftar') 
+        @else
+            <div class="p-4 text-red-500">
+                Maaf, Anda tidak memiliki akses ke halaman ini
+            </div>
+        @endif
     </div>
 
     <div id="verifikasi-opd" class="tab-content hidden">
@@ -25,7 +31,7 @@
 
 <script>
     // Initialize first tab on page load
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         showTab('daftar-opd');
     });
 
@@ -34,16 +40,16 @@
         document.querySelectorAll('.tab-content').forEach(tab => {
             tab.classList.add('hidden');
         });
-        
+
         // Remove active state from all tabs
         document.querySelectorAll('[onclick^="showTab"]').forEach(tab => {
             tab.classList.remove('bg-blue-500', 'text-white');
             tab.classList.add('bg-gray-200', 'text-gray-700');
         });
-        
+
         // Show selected tab content
         document.getElementById(tabId).classList.remove('hidden');
-        
+
         // Set active state for selected tab
         document.querySelector(`[onclick="showTab('${tabId}')"]`).classList.remove('bg-gray-200', 'text-gray-700');
         document.querySelector(`[onclick="showTab('${tabId}')"]`).classList.add('bg-blue-500', 'text-white');

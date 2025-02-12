@@ -7,7 +7,7 @@
     </div>
 
     <div class="bg-blue-200 shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <form action="{{ route('notulensi.store') }}" method="POST">
+        <form action="{{ route('notulensi.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
             <div class="mb-4">
@@ -48,6 +48,17 @@
                 <textarea name="isi" id="isi" rows="10"
                     class="tinymce-editor isi bg-blue-50 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
                 @error('isi')
+                    <p class="text-red-500 text-xs italic">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="image">
+                    Upload Foto
+                </label>
+                <input type="file" name="image" id="image"
+                    class="bg-blue-50 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                @error('image')
                     <p class="text-red-500 text-xs italic">{{ $message }}</p>
                 @enderror
             </div>

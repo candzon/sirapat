@@ -64,6 +64,7 @@ class AuthController extends Controller
             'password' => Hash::make($validated['password']),
             'role' => 'user',
             'is_active' => 0,
+            'opd_id' => $validated['opd'],
         ]);
 
         DB::table('opd_members')->insert([
@@ -74,7 +75,7 @@ class AuthController extends Controller
         ]);
 
         Auth::login($user);
-        
+
         // Hancurkan session ketika user belum aktif
         $request->session()->regenerate();
         $request->session()->invalidate();

@@ -77,27 +77,27 @@
         <div class="header">
             <img src="{{ public_path('image/pt.png') }}" alt="Logo-PT">
             <h3>PEMERINTAH KABUPATEN </h3>
-            <h3>{{strtoupper($notulens->nama)}}</h3>
-            <p>{{$notulens->alamat}}</p>
-            <p>Telepon : {{$notulens->telepon}} | E-mail : {{$notulens->email}}</p>
+            <h3>{{$undangan ? strtoupper($undangan->nama) : ''}}</h3>
+            <p>{{$undangan ? $undangan->alamat : ''}}</p>
+            <p>Telepon : {{$undangan ? $undangan->telepon : ''}} | E-mail : {{$undangan ? $undangan->email : ''}}</p>
         </div>
         <hr class="divider">
         <!-- Tambahkan konten notulen rapat Anda di sini -->
 
         <div class="isi-body">
             <!-- <h3 class="isi-header underline-text">NOTA DINAS</h3> -->
-             <!-- Isi dari Undangan -->
-            <p class="p-isi-body">{!! $notulens->isi !!}</p>
+            <!-- Isi dari Undangan -->
+            <p class="p-isi-body">{!! $undangan ? $undangan->isi : '' !!}</p>
         </div>
 
         <!-- Tanda Tangan  -->
-        <!-- <div class="footer">
+        <div class="footer">
             <table style="width: 250px; text-align: center;">
                 <tr>
                     <td>Kepala Bidang</td>
                 </tr>
                 <tr>
-                    <td>{{strtoupper($notulens->nama)}}</td>
+                    <td>{{$undangan ? strtoupper($undangan->nama) : ''}}</td>
                 </tr>
                 <tr>
                     <td style="height: 80px;"></td>
@@ -106,13 +106,13 @@
                     <td style="border-bottom: 1px solid black; height: 20px;">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td><strong>{{$notulens->name}}</strong></td>
+                    <td><strong>{{$undangan ? $undangan->name : ''}}</strong></td>
                 </tr>
                 <tr>
-                    <td>NIP: {{$notulens->nip}}</td>
+                    <td>NIP: {{$undangan ? $undangan->nip : ''}}</td>
                 </tr>
             </table>
-        </div> -->
+        </div>
     </div>
 </body>
 
